@@ -1,9 +1,15 @@
-package com.luna;
+package com.luna.register;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,7 +22,9 @@ import java.util.concurrent.TimeUnit;
 public class Register {
 
     /** 创建浏览器对象 */
-    public static ChromeDriver chromeDriver;
+    public static ChromeDriver  chromeDriver;
+
+    private static final String USER_ACCOUNT = "user_account.json";
 
     static {
         // 配置本地浏览器驱动路径
@@ -43,7 +51,7 @@ public class Register {
      * 密码正确匹配
      * @throws InterruptedException
      */
-    public void register(String email, String password) throws InterruptedException {
+    public static void register(String email, String password) throws InterruptedException {
         // 使用额email定位手机号的输入框
         WebElement inputEmail = chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(1)>div>input"));
@@ -74,19 +82,47 @@ public class Register {
         // 休息一秒
         Thread.sleep(1000L);
 
-
         // 同意协议
         chromeDriver.findElement(By.cssSelector("#content>div>div.box>div>div>form>div.mb16>div>label>span"))
-                .click();
+            .click();
 
         // 提交
         chromeDriver.findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(8)>div>button"))
             .click();
     }
 
+    private static void writeUserSetting(String json) {
+        try {
+            org.apache.commons.io.FileUtils.writeStringToFile(new File(USER_ACCOUNT), json,
+                StandardCharsets.UTF_8, true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 自动注册
+     * 
+     * @param startId 开始id
+     * @param passwordLength 密码长度
+     * @throws InterruptedException
+     */
+    public static void autoRegister(int startId, int passwordLength, int size) throws InterruptedException {
+        for (int i = 0; i < size; i++) {
+            String id = String.valueOf(startId + i);
+            String email = "pascalqq+" + (id.length() > 4 ? id : "0" + id) + "@protonmail.com";
+
+            String password = CreateKeyUtil.getRandKeys(passwordLength);
+            writeUserSetting(JSON.toJSONString(ImmutableMap.of(
+                "email", email,
+                "password", password, "", "\n")));
+            register(email, password);
+            break;
+        }
+    }
+
     public static void main(String[] args) throws InterruptedException {
-        Register register = new Register();
-        register.register("15696756582@163.com", "123456");
+        autoRegister(0202, 8, 5);
     }
 
 }

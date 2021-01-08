@@ -1,4 +1,4 @@
-package com.luna.register;
+package com.luna.nicehash.register;
 
 /**
  * 自动生成密码

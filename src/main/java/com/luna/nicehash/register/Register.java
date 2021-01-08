@@ -1,15 +1,21 @@
-package com.luna.register;
+package com.luna.nicehash.register;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.ImmutableMap;
-import org.apache.commons.lang3.StringUtils;
+import com.luna.nicehash.MyChromeDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,24 +26,9 @@ import java.util.concurrent.TimeUnit;
  * @Description: chrome 87.0.4280.88 版本 驱动地址 https://npm.taobao.org/mirrors/chromedriver/87.0.4280.88/
  */
 public class Register {
-
-    /** 创建浏览器对象 */
-    public static ChromeDriver  chromeDriver;
-
     private static final String USER_ACCOUNT = "user_account.json";
 
-    static {
-        // 配置本地浏览器驱动路径
-        System.getProperties().setProperty("webdriver.chrome.driver",
-            "src\\main\\resources\\chromedriver.exe");
-        chromeDriver = new ChromeDriver();
-        // 设置浏览器窗口最大化
-        chromeDriver.manage().window().maximize();
-        // 设置需要操作的网页url
-        chromeDriver.get("https://www.nicehash.com/my/register");
-        // 设置隐式等待时间，根据目标网页的响应速度设置超时时间
-        chromeDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-    }
+    private static final Logger log          = LoggerFactory.getLogger(Register.class);
 
     /**
      *
@@ -53,7 +44,7 @@ public class Register {
      */
     public static void register(String email, String password) throws InterruptedException {
         // 使用额email定位手机号的输入框
-        WebElement inputEmail = chromeDriver
+        WebElement inputEmail = MyChromeDriver.chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(1)>div>input"));
         // 清除输入框内容
         inputEmail.clear();
@@ -62,7 +53,7 @@ public class Register {
         // 休息一秒
         Thread.sleep(1000L);
 
-        WebElement inputPassword = chromeDriver
+        WebElement inputPassword = MyChromeDriver.chromeDriver
             .findElement(By.cssSelector(
                 "#content>div>div.box>div>div>form>div:nth-child(2)>div>input"));
         // 清除输入框内容
@@ -72,7 +63,7 @@ public class Register {
         // 休息一秒
         Thread.sleep(1000L);
 
-        WebElement ensurePassword = chromeDriver
+        WebElement ensurePassword = MyChromeDriver.chromeDriver
             .findElement(By.cssSelector(
                 "#content>div>div.box>div>div>form>div:nth-child(3)>div>input"));
         // 清除输入框内容
@@ -83,11 +74,13 @@ public class Register {
         Thread.sleep(1000L);
 
         // 同意协议
-        chromeDriver.findElement(By.cssSelector("#content>div>div.box>div>div>form>div.mb16>div>label>span"))
+        MyChromeDriver.chromeDriver
+            .findElement(By.cssSelector("#content>div>div.box>div>div>form>div.mb16>div>label>span"))
             .click();
 
         // 提交
-        chromeDriver.findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(8)>div>button"))
+        MyChromeDriver.chromeDriver
+            .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(8)>div>button"))
             .click();
     }
 
@@ -108,25 +101,20 @@ public class Register {
      * @throws InterruptedException
      */
     public static void autoRegister(Integer startId, int passwordLength, int size) throws InterruptedException {
+        MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
+        List<Map<String, String>> userList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String id = String.valueOf(startId + i);
             String email = "pascalqq+" + (id.length() > 4 ? id : "0" + id) + "@protonmail.com";
-
-            System.out.println(email);
-
             String password = CreateKeyUtil.getRandKeys(passwordLength);
-            writeUserSetting(JSON.toJSONString(ImmutableMap.of(
-                "email", email,
-                "password", password)) + "\n");
+            log.info("email={}, password={}", email, password);
+            ImmutableMap<String, String> user = ImmutableMap.of("email", email, "password", password);
+            userList.add(user);
             register(email, password);
-            // 休息一秒
-            Thread.sleep(3000L);
-            chromeDriver.get("https://www.nicehash.com/my/register");
+            Thread.sleep(5000L);
+            MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
         }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        autoRegister(267, 10, 2);
+        writeUserSetting(JSON.toJSONString(userList) + "\n");
     }
 
 }

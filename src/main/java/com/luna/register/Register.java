@@ -107,22 +107,24 @@ public class Register {
      * @param passwordLength 密码长度
      * @throws InterruptedException
      */
-    public static void autoRegister(int startId, int passwordLength, int size) throws InterruptedException {
+    public static void autoRegister(Integer startId, int passwordLength, int size) throws InterruptedException {
         for (int i = 0; i < size; i++) {
             String id = String.valueOf(startId + i);
             String email = "pascalqq+" + (id.length() > 4 ? id : "0" + id) + "@protonmail.com";
 
+            System.out.println(email);
+
             String password = CreateKeyUtil.getRandKeys(passwordLength);
             writeUserSetting(JSON.toJSONString(ImmutableMap.of(
                 "email", email,
-                "password", password, "", "\n")));
+                "password", password)) + "\n");
             register(email, password);
-            break;
+            chromeDriver.get("https://www.nicehash.com/my/register");
         }
     }
 
     public static void main(String[] args) throws InterruptedException {
-        autoRegister(0202, 8, 5);
+        autoRegister(267, 8, 11);
     }
 
 }

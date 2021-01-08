@@ -119,12 +119,14 @@ public class Register {
                 "email", email,
                 "password", password)) + "\n");
             register(email, password);
+            // 休息一秒
+            Thread.sleep(3000L);
             chromeDriver.get("https://www.nicehash.com/my/register");
         }
     }
 
     public static void main(String[] args) throws InterruptedException {
-        autoRegister(267, 8, 11);
+        autoRegister(267, 10, 2);
     }
 
 }

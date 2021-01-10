@@ -10,7 +10,7 @@ package com.luna.nicehash.register;
 public class CreateKeyUtil {
 
     public static void main(String[] args) {
-        System.out.println(getRandKeys(9));
+        System.out.println(getRandomKeys(9));
     }
 
     /**
@@ -19,7 +19,7 @@ public class CreateKeyUtil {
      * @param intLength
      * @return
      */
-    public static String getRandKeys(int intLength) {
+    public static String getRandomKeys(int intLength) {
 
         String retStr; // 生成的密码
         String strTable = "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz!@#$%^&*<>/.,";

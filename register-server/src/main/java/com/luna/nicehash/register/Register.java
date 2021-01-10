@@ -1,19 +1,16 @@
 package com.luna.nicehash.register;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import com.luna.nicehash.entity.UserDO;
+import com.luna.nicehash.util.FileUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.ImmutableMap;
 import com.luna.nicehash.MyChromeDriver;
 
 /**
@@ -82,14 +79,7 @@ public class Register {
             .click();
     }
 
-    private static void writeUserSetting(String json) {
-        try {
-            org.apache.commons.io.FileUtils.writeStringToFile(new File(USER_ACCOUNT), json,
-                StandardCharsets.UTF_8, true);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
     /**
      * 自动注册
@@ -100,19 +90,20 @@ public class Register {
      */
     public static void autoRegister(Integer startId, int passwordLength, int size) throws InterruptedException {
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
-        List<Map<String, String>> userList = new ArrayList<>();
+        List<UserDO> userList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String id = String.valueOf(startId + i);
             String email = "pascalqq+" + (id.length() > 4 ? id : "0" + id) + "@protonmail.com";
-            String password = CreateKeyUtil.getRandKeys(passwordLength);
+            String password = CreateKeyUtil.getRandomKeys(passwordLength);
             log.info("email={}, password={}", email, password);
-            ImmutableMap<String, String> user = ImmutableMap.of("email", email, "password", password);
-            userList.add(user);
+            UserDO userDO = new UserDO(email, password);
+            userList.add(userDO);
             register(email, password);
+            FileUtil.writeSetting(email + ".json", JSON.toJSONString(userDO) + "\n");
             Thread.sleep(5000L);
             MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
         }
-        writeUserSetting(JSON.toJSONString(userList) + "\n");
+        FileUtil.writeSetting(USER_ACCOUNT, JSON.toJSONString(userList) + "\n");
     }
 
 }

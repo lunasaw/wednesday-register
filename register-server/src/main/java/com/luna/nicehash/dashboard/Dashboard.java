@@ -1,9 +1,7 @@
 package com.luna.nicehash.dashboard;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +9,7 @@ import com.luna.nicehash.MyChromeDriver;
 import com.luna.nicehash.entity.ApiKeyDO;
 import com.luna.nicehash.entity.UserDO;
 import com.luna.nicehash.login.Login;
+import com.luna.nicehash.util.FileUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -159,7 +158,6 @@ public class Dashboard {
         return new ApiKeyDO(organizationIdText, address, apikey, apiSecret);
     }
 
-
     /**
      * 自动获取apiKey
      * 
@@ -177,20 +175,12 @@ public class Dashboard {
             dashboard();
             Thread.sleep(2000L);
             ApiKeyDO key = getKey(userDO.getPassword());
+            FileUtil.writeSetting(userDO.getEmail() + ".json", JSON.toJSONString(key));
             userApiKey.add(key);
             log.info("user={}, apiKey={}", userDO.getEmail(), key);
             MyChromeDriver.exit();
         }
-        writeUserApiKeySetting(JSON.toJSONString(userApiKey));
-    }
-
-    private static void writeUserApiKeySetting(String json) {
-        try {
-            org.apache.commons.io.FileUtils.writeStringToFile(new File(USER_ACCOUNT), json,
-                StandardCharsets.UTF_8, true);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        FileUtil.writeSetting(USER_ACCOUNT, JSON.toJSONString(userApiKey));
     }
 
     public static void main(String[] args) throws InterruptedException {

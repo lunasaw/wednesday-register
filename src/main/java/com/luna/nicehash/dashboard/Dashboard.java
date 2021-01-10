@@ -3,6 +3,8 @@ package com.luna.nicehash.dashboard;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.ImmutableMap;
 import com.luna.nicehash.MyChromeDriver;
+import com.luna.nicehash.entity.ApiKeyDO;
+import com.luna.nicehash.entity.UserDO;
 import com.luna.nicehash.login.Login;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -69,7 +71,7 @@ public class Dashboard {
      * @return
      * @throws InterruptedException
      */
-    public static ImmutableMap<String, String> getKey(String password)
+    public static ApiKeyDO getKey(String password)
         throws InterruptedException {
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/settings/keys");
         Thread.sleep(1000L);
@@ -155,14 +157,12 @@ public class Dashboard {
         Thread.sleep(1000L);
 
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/dashboard");
-        ImmutableMap<String, String> apiKey = ImmutableMap.of(
-            "organizationId", organizationIdText,
-            "address", address, "apiKey", apikey, "apiSecret", apiSecret);
-        return apiKey;
+
+        return new ApiKeyDO(organizationIdText, address, apikey, apiSecret);
     }
 
     /**
-     * 注销
+     * 清除浏览器记录
      */
     public static void exit() {
         MyChromeDriver.chromeDriver.getLocalStorage().clear();
@@ -177,17 +177,17 @@ public class Dashboard {
      * @throws IOException
      * @throws UnsupportedFlavorException
      */
-    public static void autoCrete(List<Map<String, String>> userList)
+    public static void autoCrete(List<UserDO> userList)
         throws InterruptedException {
-        List<Map<String, String>> userApiKey = new ArrayList<>();
-        for (Map<String, String> map : userList) {
-            Login.login(map.get("email"), map.get("password"));
+        List<ApiKeyDO> userApiKey = new ArrayList<>();
+        for (UserDO userDO : userList) {
+            Login.login(userDO.getEmail(), userDO.getPassword());
             Thread.sleep(2000L);
             dashboard();
             Thread.sleep(2000L);
-            ImmutableMap<String, String> key = getKey(map.get("password"));
+            ApiKeyDO key = getKey(userDO.getPassword());
             userApiKey.add(key);
-            log.info("user={}, apiKey={}", map.get("email"), key);
+            log.info("user={}, apiKey={}", userDO.getEmail(), key);
             exit();
         }
         writeUserApiKeySetting(JSON.toJSONString(userApiKey));
@@ -203,9 +203,9 @@ public class Dashboard {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        List<Map<String, String>> userList = new ArrayList<>();
-        userList.add(ImmutableMap.of("email", "pascalqq+0280@protonmail.com", "password", "i6ya@prG29"));
-        userList.add(ImmutableMap.of("email", "pascalqq+0281@protonmail.com", "password", "M8*c@iKZQH"));
+        List<UserDO> userList = new ArrayList<>();
+        userList.add(new UserDO("pascalqq+0280@protonmail.com", "i6ya@prG29"));
+        userList.add(new UserDO("pascalqq+0281@protonmail.com", "M8*c@iKZQH"));
         autoCrete(userList);
     }
 }

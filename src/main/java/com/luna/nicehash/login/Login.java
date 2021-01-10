@@ -27,7 +27,7 @@ public class Login {
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(1)>div>input"));
         // 清除输入框内容
         inputEmail.clear();
-        // 输入手机号
+        // 输入邮箱
         inputEmail.sendKeys(email);
         // 休息一秒
         Thread.sleep(1000L);

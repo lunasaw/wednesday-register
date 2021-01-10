@@ -1,7 +1,12 @@
 package com.luna.nicehash.dashboard;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.collect.ImmutableMap;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.luna.nicehash.MyChromeDriver;
 import com.luna.nicehash.entity.ApiKeyDO;
 import com.luna.nicehash.entity.UserDO;
@@ -11,17 +16,10 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.fastjson.JSON;
 
 /**
- * @Package: com.luna.nicehash.dashboard
+ * @Package: com.luna.com.luna.nicehash.dashboard
  * @ClassName: Dashboard
  * @Author: luna
  * @CreateTime: 2021/1/8 14:33
@@ -161,13 +159,6 @@ public class Dashboard {
         return new ApiKeyDO(organizationIdText, address, apikey, apiSecret);
     }
 
-    /**
-     * 清除浏览器记录
-     */
-    public static void exit() {
-        MyChromeDriver.chromeDriver.getLocalStorage().clear();
-        MyChromeDriver.chromeDriver.manage().deleteAllCookies();
-    }
 
     /**
      * 自动获取apiKey
@@ -188,7 +179,7 @@ public class Dashboard {
             ApiKeyDO key = getKey(userDO.getPassword());
             userApiKey.add(key);
             log.info("user={}, apiKey={}", userDO.getEmail(), key);
-            exit();
+            MyChromeDriver.exit();
         }
         writeUserApiKeySetting(JSON.toJSONString(userApiKey));
     }

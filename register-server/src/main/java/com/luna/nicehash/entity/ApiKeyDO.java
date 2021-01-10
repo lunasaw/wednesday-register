@@ -1,7 +1,7 @@
 package com.luna.nicehash.entity;
 
 /**
- * @Package: com.luna.nicehash.entity
+ * @Package: com.luna.com.luna.nicehash.entity
  * @ClassName: ApiKeyDO
  * @Author: luna
  * @CreateTime: 2021/1/10 16:35

@@ -1,22 +1,20 @@
 package com.luna.nicehash.register;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.collect.ImmutableMap;
-import com.luna.nicehash.MyChromeDriver;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.ImmutableMap;
+import com.luna.nicehash.MyChromeDriver;
 
 /**
  * @Package: com.luna

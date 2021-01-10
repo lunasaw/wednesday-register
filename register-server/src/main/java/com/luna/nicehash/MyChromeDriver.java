@@ -1,18 +1,17 @@
 package com.luna.nicehash;
 
-import com.luna.nicehash.dashboard.Dashboard;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
 import com.luna.nicehash.login.Login;
-import com.luna.nicehash.register.Register;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
 /**
- * @Package: com.luna.nicehash
+ * @Package: com.luna.com.luna.nicehash
  * @ClassName: ChromeDriver
  * @Author: luna
  * @CreateTime: 2021/1/8 14:23
@@ -26,9 +25,14 @@ public class MyChromeDriver {
     private static final Logger                           log = LoggerFactory.getLogger(MyChromeDriver.class);
 
     static {
+        MyChromeDriver myChromeDriver = new MyChromeDriver();
+        myChromeDriver.start();
+    }
+
+    public void start() {
         // 配置本地浏览器驱动路径
         System.getProperties().setProperty("webdriver.chrome.driver",
-            "src\\main\\resources\\chromedriver.exe");
+            Objects.requireNonNull(this.getClass().getClassLoader().getResource("chromedriver.exe")).getPath());
         chromeDriver = new org.openqa.selenium.chrome.ChromeDriver();
         // 设置浏览器窗口最大化
         chromeDriver.manage().window().maximize();
@@ -36,20 +40,16 @@ public class MyChromeDriver {
         chromeDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-    public static void refresh() {
-        chromeDriver.getSessionStorage().clear();
+    /**
+     * 清除浏览器记录
+     */
+    public static void exit() {
+        MyChromeDriver.chromeDriver.getLocalStorage().clear();
+        MyChromeDriver.chromeDriver.manage().deleteAllCookies();
+        MyChromeDriver.chromeDriver.getSessionStorage().clear();
     }
 
-    @Test
-    public void register() throws InterruptedException {
-        Register.autoRegister(280, 10, 2);
-    }
-
-    @Test
-    public void getKey() throws InterruptedException, IOException, UnsupportedFlavorException {
+    public static void main(String[] args) throws InterruptedException {
         Login.login("pascalqq+0280@protonmail.com", "i6ya@prG29");
-        Thread.sleep(5000L);
-        Dashboard.getKey("q7,$M28FHk");
-        log.info("");
     }
 }

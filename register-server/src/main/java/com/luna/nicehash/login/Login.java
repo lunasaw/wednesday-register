@@ -1,11 +1,12 @@
 package com.luna.nicehash.login;
 
-import com.luna.nicehash.MyChromeDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import com.luna.nicehash.MyChromeDriver;
+
 /**
- * @Package: com.luna.nicehash.login
+ * @Package: com.luna.com.luna.nicehash.login
  * @ClassName: Login
  * @Author: luna
  * @CreateTime: 2021/1/8 14:23

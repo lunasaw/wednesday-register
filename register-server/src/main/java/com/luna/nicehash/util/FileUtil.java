@@ -16,7 +16,16 @@ public class FileUtil {
     public static void writeSetting(String file, String json) {
         try {
             org.apache.commons.io.FileUtils.writeStringToFile(new File(file), json,
-                StandardCharsets.UTF_8, true);
+                StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void writeSetting(String file, String json,boolean Over) {
+        try {
+            org.apache.commons.io.FileUtils.writeStringToFile(new File(file), json,
+                    StandardCharsets.UTF_8,Over);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

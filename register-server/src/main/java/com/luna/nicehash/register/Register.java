@@ -21,9 +21,11 @@ import com.luna.nicehash.MyChromeDriver;
  * @Description: chrome 87.0.4280.88 版本 驱动地址 https://npm.taobao.org/mirrors/chromedriver/87.0.4280.88/
  */
 public class Register {
-    private static final String USER_ACCOUNT = "user_account.json";
+    private static final String USER_ACCOUNT     = "user_account.json";
 
-    private static final Logger log          = LoggerFactory.getLogger(Register.class);
+    private static final String USER_ACCOUNT_TMP = "account_tmp/account_";
+
+    private static final Logger log              = LoggerFactory.getLogger(Register.class);
 
     /**
      *
@@ -79,8 +81,6 @@ public class Register {
             .click();
     }
 
-
-
     /**
      * 自动注册
      * 
@@ -90,7 +90,7 @@ public class Register {
      */
     public static void autoRegister(Integer startId, int passwordLength, int size) throws InterruptedException {
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
-        List<UserDO> userList = new ArrayList<>();
+        List<UserDO> userList = new ArrayList<UserDO>();
         for (int i = 0; i < size; i++) {
             String id = String.valueOf(startId + i);
             String email = "pascalqq+" + (id.length() > 4 ? id : "0" + id) + "@protonmail.com";
@@ -99,8 +99,8 @@ public class Register {
             UserDO userDO = new UserDO(email, password);
             userList.add(userDO);
             register(email, password);
-            FileUtil.writeSetting(email + ".json", JSON.toJSONString(userDO) + "\n");
-            Thread.sleep(5000L);
+            FileUtil.writeSetting(USER_ACCOUNT_TMP + email + ".json", JSON.toJSONString(userDO) + "\n");
+            Thread.sleep(10000L);
             MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
         }
         FileUtil.writeSetting(USER_ACCOUNT, JSON.toJSONString(userList) + "\n");

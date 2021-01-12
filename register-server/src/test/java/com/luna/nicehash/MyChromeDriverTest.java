@@ -3,6 +3,7 @@ package com.luna.nicehash;
 import com.alibaba.fastjson.JSON;
 import com.luna.nicehash.dashboard.Dashboard;
 import com.luna.nicehash.entity.ApiKeyDO;
+import com.luna.nicehash.entity.UserDO;
 import com.luna.nicehash.login.Login;
 import com.luna.nicehash.register.Register;
 import org.junit.Test;
@@ -10,6 +11,8 @@ import org.junit.Test;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Package: com.luna.nicehash
@@ -22,7 +25,7 @@ public class MyChromeDriverTest {
 
     @Test
     public void register() throws InterruptedException {
-        Register.autoRegister(282, 10, 1);
+        Register.autoRegister(295, 10, 7);
     }
 
     @Test
@@ -38,6 +41,12 @@ public class MyChromeDriverTest {
         System.out.println(System.getProperty("user.dir") + "\\");
         URL resource = this.getClass().getClassLoader().getResource("chromedriver.exe");
         System.out.println(resource.getPath());
+    }
 
+    @Test
+    public void autoGetKey() throws InterruptedException {
+        List<UserDO> userList = new ArrayList<UserDO>();
+        userList.add(new UserDO("pascalqq+02976@protonmail.com", "!v6Wx5Ugid"));
+        Dashboard.autoCrete(userList);
     }
 }

@@ -6,6 +6,8 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import com.luna.nicehash.login.Login;
+import com.luna.nicehash.os.OSinfo;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,16 @@ public class MyChromeDriver {
 
     public void start() {
         // 配置本地浏览器驱动路径
+        String drivePath = StringUtils.EMPTY;
+        if (OSinfo.isWindows()) {
+            drivePath= "chromedriver.exe";
+        }else if (OSinfo.isMacOSX() || OSinfo.isMacOS()){
+            drivePath= "chromedriver";
+        }
         System.getProperties().setProperty("webdriver.chrome.driver",
-            Objects.requireNonNull(this.getClass().getClassLoader().getResource("chromedriver.exe")).getPath());
+                Objects.requireNonNull(this.getClass().getClassLoader().getResource(drivePath)).getPath());
+
+
         chromeDriver = new org.openqa.selenium.chrome.ChromeDriver();
         // 设置浏览器窗口最大化
         chromeDriver.manage().window().maximize();

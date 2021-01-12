@@ -110,11 +110,11 @@ public class Dashboard {
         // 输入密码
         inputPassword.sendKeys(password);
         // 休息
-        Thread.sleep(3000L);
         MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span:nth-child(2)>div>div>div.modal-content>div>form>div.row>div>button"))
                 .click();
+
 
         String apikey = MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
@@ -136,7 +136,9 @@ public class Dashboard {
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span:nth-child(2)>div>div>div.modal-content>div>div.row>div>button"))
                 .click();
-        Thread.sleep(3000L);
+        Thread.sleep(60000L);
+
+
         // 地址
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/mining/rigs");
         MyChromeDriver.chromeDriver

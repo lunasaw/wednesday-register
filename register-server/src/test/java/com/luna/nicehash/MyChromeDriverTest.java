@@ -25,7 +25,7 @@ public class MyChromeDriverTest {
 
     @Test
     public void register() throws InterruptedException {
-        Register.autoRegister(295, 10, 7);
+        Register.autoRegister(300, 10, 1);
     }
 
     @Test
@@ -38,15 +38,17 @@ public class MyChromeDriverTest {
 
     @Test
     public void atest() {
-        System.out.println(System.getProperty("user.dir") + "\\");
-        URL resource = this.getClass().getClassLoader().getResource("chromedriver.exe");
-        System.out.println(resource.getPath());
+        System.out.printf(System.getProperty("os.name"));
+
+//        System.out.println(System.getProperty("user.dir") + "\\");
+//        URL resource = this.getClass().getClassLoader().getResource("chromedriver.exe");
+//        System.out.println(resource.getPath());
     }
 
     @Test
     public void autoGetKey() throws InterruptedException {
         List<UserDO> userList = new ArrayList<UserDO>();
-        userList.add(new UserDO("pascalqq+02976@protonmail.com", "!v6Wx5Ugid"));
+        userList.add(new UserDO("pascalqq+0301@protonmail.com", "3gc.gWyM,j"));
         Dashboard.autoCrete(userList);
     }
 }

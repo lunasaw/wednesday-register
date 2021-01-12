@@ -79,6 +79,7 @@ public class Register {
         MyChromeDriver.chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(8)>div>button"))
             .click();
+        Thread.sleep(10000L);
     }
 
     /**
@@ -100,7 +101,7 @@ public class Register {
             userList.add(userDO);
             register(email, password);
             FileUtil.writeSetting(USER_ACCOUNT_TMP + email + ".json", JSON.toJSONString(userDO) + "\n");
-            Thread.sleep(10000L);
+
             MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
         }
         FileUtil.writeSetting(USER_ACCOUNT, JSON.toJSONString(userList) + "\n");

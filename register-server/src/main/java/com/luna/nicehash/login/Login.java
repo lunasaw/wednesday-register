@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.luna.nicehash.MyChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * @Package: com.luna.com.luna.nicehash.login
@@ -13,6 +15,8 @@ import com.luna.nicehash.MyChromeDriver;
  * @Description:
  */
 public class Login {
+
+    private static final String DASHBOARD_ID_SELECTOR = "#content>div.main-top-menu>ul>li:nth-child(1)>a";
 
     /**
      * 登录
@@ -53,10 +57,7 @@ public class Login {
         MyChromeDriver.chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div.text-center.mb40>div>button"))
             .click();
-        Thread.sleep(1000L);
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        login("pascalqq+0279@protonmail.com", "LK#zvf9&%t");
+        WebDriverWait wait = new WebDriverWait(MyChromeDriver.chromeDriver, 20);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(DASHBOARD_ID_SELECTOR)));
     }
 }

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.luna.nicehash.entity.UserDO;
+import com.luna.nicehash.util.CreateKeyUtil;
 import com.luna.nicehash.util.FileUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,11 +24,14 @@ import com.luna.nicehash.MyChromeDriver;
  * @Description: chrome 87.0.4280.88 版本 驱动地址 https://npm.taobao.org/mirrors/chromedriver/87.0.4280.88/
  */
 public class Register {
-    private static final String USER_ACCOUNT     = "user_account.json";
+    private static final String USER_ACCOUNT         = "user_account.json";
 
-    private static final String USER_ACCOUNT_TMP = "account_tmp/account_";
+    private static final String USER_ACCOUNT_TMP     = "account_tmp/account_";
 
-    private static final Logger log              = LoggerFactory.getLogger(Register.class);
+    private static final Logger log                  = LoggerFactory.getLogger(Register.class);
+
+    private static final String REGISTER_ID_SELECTOR =
+        "#content>div>div.box>div>div:nth-child(2)>div>form>div.text-center.mb40>button";
 
     /**
      *
@@ -40,6 +46,7 @@ public class Register {
      * @throws InterruptedException
      */
     public static void register(String email, String password) throws InterruptedException {
+        MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
         Thread.sleep(2000L);
         // 使用额email定位邮箱的输入框
         WebElement inputEmail = MyChromeDriver.chromeDriver
@@ -80,7 +87,6 @@ public class Register {
         MyChromeDriver.chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(8)>div>button"))
             .click();
-        Thread.sleep(10000L);
     }
 
     /**
@@ -91,7 +97,6 @@ public class Register {
      * @throws InterruptedException
      */
     public static void autoRegister(Integer startId, int passwordLength, int size) throws InterruptedException {
-        MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
         List<UserDO> userList = new ArrayList<UserDO>();
         for (int i = 0; i < size; i++) {
             String id = String.valueOf(startId + i);
@@ -102,10 +107,9 @@ public class Register {
             userList.add(userDO);
             register(email, password);
             FileUtil.writeSetting(USER_ACCOUNT_TMP + email + ".json", JSON.toJSONString(userDO) + "\n");
-
-            MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/register");
+            WebDriverWait wait = new WebDriverWait(MyChromeDriver.chromeDriver, 20);
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(REGISTER_ID_SELECTOR)));
         }
         FileUtil.writeSetting(USER_ACCOUNT, JSON.toJSONString(userList) + "\n");
     }
-
 }

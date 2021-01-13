@@ -18,7 +18,7 @@ public class CountDown {
         while (midTime > 0) {
             midTime--;
             long ss = midTime % 60;
-            log.info("还剩" + ss + "秒");
+            log.info("距离下次操作还剩" + ss + "秒");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

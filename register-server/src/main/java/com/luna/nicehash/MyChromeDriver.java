@@ -47,7 +47,7 @@ public class MyChromeDriver {
         // 设置浏览器窗口最大化
         chromeDriver.manage().window().maximize();
         // 设置隐式等待时间，根据目标网页的响应速度设置超时时间
-        chromeDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        chromeDriver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
     }
 
     /**

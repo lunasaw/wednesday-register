@@ -26,12 +26,6 @@ import java.util.List;
 public class MyChromeDriverTest {
 
     @Test
-    public void register() throws InterruptedException {
-        Register.autoRegister(305, 10, 1);
-        MyChromeDriver.chromeDriver.quit();
-    }
-
-    @Test
     public void getKey() throws InterruptedException, IOException, UnsupportedFlavorException {
         Login.login("pascalqq+0282@protonmail.com", "aNvrB1@0HR!x");
         Thread.sleep(5000L);
@@ -51,24 +45,37 @@ public class MyChromeDriverTest {
     @Test
     public void autoGetKey() throws InterruptedException {
         List<UserDO> userList = new ArrayList<UserDO>();
-        userList.add(new UserDO("pascalqq+0300@protonmail.com", "PgkAs6V,cw"));
+        userList.add(new UserDO("pascalqq+0313@protonmail.com", "%bEK2sd*V5"));
         Dashboard.autoCrete(userList);
+    }
+
+    @Test
+    public void register() throws InterruptedException {
+        Register.autoRegister(322, 10, 1);
+        MyChromeDriver.chromeDriver.quit();
+    }
+
+    @Test
+    public void registerOne() throws InterruptedException {
+        Register.register("pascalqq+0318@protonmail.com","E8*T$.dJ4&");
+        MyChromeDriver.chromeDriver.quit();
     }
 
     @Test
     public void autoStart() throws InterruptedException {
         List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readFile(UserDO.class, "user_account.json");
-        System.out.printf(JSON.toJSONString(list));
-        Dashboard.autoCrete( list);
+        System.out.println(JSON.toJSONString(list));
+        Dashboard.autoCrete(list);
         MyChromeDriver.chromeDriver.quit();
     }
 
     @Test
     public void autoRegisterAndGetApi() throws InterruptedException {
-        Register.autoRegister(307, 10, 1);
+        Register.autoRegister(326, 10, 1);
         List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readFile(UserDO.class, "user_account.json");
         System.out.printf(JSON.toJSONString(list));
-        CountDown.countDown(60L);
+        // 等待账号激活
+        CountDown.countDown(40L);
         Dashboard.autoCrete(list);
         MyChromeDriver.chromeDriver.quit();
     }

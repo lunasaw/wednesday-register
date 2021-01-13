@@ -6,6 +6,8 @@ import com.luna.nicehash.entity.ApiKeyDO;
 import com.luna.nicehash.entity.UserDO;
 import com.luna.nicehash.login.Login;
 import com.luna.nicehash.register.Register;
+import com.luna.nicehash.util.CountDown;
+import com.luna.nicehash.util.ParseJsonFile;
 import org.junit.Test;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -25,7 +27,8 @@ public class MyChromeDriverTest {
 
     @Test
     public void register() throws InterruptedException {
-        Register.autoRegister(300, 10, 1);
+        Register.autoRegister(305, 10, 1);
+        MyChromeDriver.chromeDriver.quit();
     }
 
     @Test
@@ -40,15 +43,33 @@ public class MyChromeDriverTest {
     public void atest() {
         System.out.printf(System.getProperty("os.name"));
 
-//        System.out.println(System.getProperty("user.dir") + "\\");
-//        URL resource = this.getClass().getClassLoader().getResource("chromedriver.exe");
-//        System.out.println(resource.getPath());
+        System.out.println(System.getProperty("user.dir") + "\\");
+        URL resource = this.getClass().getClassLoader().getResource("chromedriver.exe");
+        System.out.println(resource.getPath());
     }
 
     @Test
     public void autoGetKey() throws InterruptedException {
         List<UserDO> userList = new ArrayList<UserDO>();
-        userList.add(new UserDO("pascalqq+0301@protonmail.com", "3gc.gWyM,j"));
+        userList.add(new UserDO("pascalqq+0300@protonmail.com", "PgkAs6V,cw"));
         Dashboard.autoCrete(userList);
+    }
+
+    @Test
+    public void autoStart() throws InterruptedException {
+        List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readFile(UserDO.class, "user_account.json");
+        System.out.printf(JSON.toJSONString(list));
+        Dashboard.autoCrete( list);
+        MyChromeDriver.chromeDriver.quit();
+    }
+
+    @Test
+    public void autoRegisterAndGetApi() throws InterruptedException {
+        Register.autoRegister(307, 10, 1);
+        List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readFile(UserDO.class, "user_account.json");
+        System.out.printf(JSON.toJSONString(list));
+        CountDown.countDown(60L);
+        Dashboard.autoCrete(list);
+        MyChromeDriver.chromeDriver.quit();
     }
 }

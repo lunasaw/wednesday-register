@@ -40,7 +40,8 @@ public class Register {
      * @throws InterruptedException
      */
     public static void register(String email, String password) throws InterruptedException {
-        // 使用额email定位手机号的输入框
+        Thread.sleep(2000L);
+        // 使用额email定位邮箱的输入框
         WebElement inputEmail = MyChromeDriver.chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(1)>div>input"));
         // 清除输入框内容

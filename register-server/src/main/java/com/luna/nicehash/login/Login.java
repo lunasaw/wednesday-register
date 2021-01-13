@@ -23,6 +23,7 @@ public class Login {
      */
     public static void login(String email, String password) throws InterruptedException {
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/login");
+        Thread.sleep(2000L);
         // 使用额email定位手机号的输入框
         WebElement inputEmail = MyChromeDriver.chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(1)>div>input"));
@@ -52,6 +53,7 @@ public class Login {
         MyChromeDriver.chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div.text-center.mb40>div>button"))
             .click();
+        Thread.sleep(1000L);
     }
 
     public static void main(String[] args) throws InterruptedException {

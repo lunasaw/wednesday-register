@@ -9,6 +9,7 @@ import com.luna.nicehash.MyChromeDriver;
 import com.luna.nicehash.entity.ApiKeyDO;
 import com.luna.nicehash.entity.UserDO;
 import com.luna.nicehash.login.Login;
+import com.luna.nicehash.util.CountDown;
 import com.luna.nicehash.util.FileUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -73,18 +74,22 @@ public class Dashboard {
     public static ApiKeyDO getKey(String password)
             throws InterruptedException {
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/settings/keys");
-        Thread.sleep(1000L);
+        Thread.sleep(3000L);
         // 组织id
         WebElement organizationIdLabel = MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
                         "#content>div.container.flex.mb32.settings-panel>div.content.ml32.ml0-sm-down.mt32-sm-down>div>div>div.row>div.col-sm-7.col-sm-12>small.text-muted.mb32>strong"));
-
         String organizationIdText = organizationIdLabel.getText();
+        Thread.sleep(2000L);
 
+        // 创建API按钮
         MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
                         "#content>div.container.flex.mb32.settings-panel>div.content.ml32.ml0-sm-down.mt32-sm-down>div>div>div.row>div.col-sm-5.col-xs-12.mt16-xs-down.mt32>button"))
                 .click();
+
+
+        Thread.sleep(2000L);
         // 密钥名称
         WebElement inputApiKeyName = MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
@@ -100,7 +105,7 @@ public class Dashboard {
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span>div>div>div.modal-content>div.row.mt40>div>button.btn.primary.normal"))
                 .click();
-
+        Thread.sleep(2000L);
         // 输入密码
         WebElement inputPassword = MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
@@ -110,6 +115,7 @@ public class Dashboard {
         // 输入密码
         inputPassword.sendKeys(password);
         // 休息
+        Thread.sleep(2000L);
         MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span:nth-child(2)>div>div>div.modal-content>div>form>div.row>div>button"))
@@ -120,7 +126,7 @@ public class Dashboard {
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span:nth-child(2)>div>div>div.modal-content>div>div:nth-child(2)>div.input-group>input"))
                 .getAttribute("value");
-
+        Thread.sleep(1000L);
         String apiSecret = MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span:nth-child(2)>div>div>div.modal-content>div>div:nth-child(3)>div.input-group>input"))
@@ -131,26 +137,28 @@ public class Dashboard {
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span:nth-child(2)>div>div>div.modal-content>div>div.mb32.checkbox>label>span"))
                 .click();
+        Thread.sleep(1000L);
         // 激活
         MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span:nth-child(2)>div>div>div.modal-content>div>div.row>div>button"))
                 .click();
-        Thread.sleep(60000L);
 
-
+        log.info("发送api激活邮件 等待60秒");
+        CountDown.countDown(60L);
         // 地址
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/mining/rigs");
+        Thread.sleep(1000L);
         MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
                         "#content>div.container-full-white>div:nth-child(2)>div.row.header>div:nth-child(1)>button"))
                 .click();
-
+        Thread.sleep(1000L);
         MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span>div>div>div.modal-content>div>div>div.mt32.field-wrap.input-undefined>div.input-group.medium>button"))
                 .click();
-
+        Thread.sleep(1000L);
         String address = MyChromeDriver.chromeDriver
                 .findElement(By.cssSelector(
                         "#app>div.modal-bg.show>span>div>div>div.modal-content>div>div>div.mt32.field-wrap.input-undefined>div.input-group.medium>input"))
@@ -158,7 +166,7 @@ public class Dashboard {
         Thread.sleep(1000L);
 
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/dashboard");
-
+        Thread.sleep(1000L);
         return new ApiKeyDO(organizationIdText, address, apikey, apiSecret);
     }
 
@@ -174,6 +182,7 @@ public class Dashboard {
             throws InterruptedException {
         List<ApiKeyDO> userApiKey = new ArrayList<ApiKeyDO>();
         for (UserDO userDO : userList) {
+            log.info("user {} start to create apiKey",JSON.toJSONString(userDO));
             Login.login(userDO.getEmail(), userDO.getPassword());
             Thread.sleep(2000L);
             dashboard();
@@ -181,7 +190,7 @@ public class Dashboard {
             ApiKeyDO key = getKey(userDO.getPassword());
             FileUtil.writeSetting(USER_ACCOUNT_TMP + userDO.getEmail() + ".json", JSON.toJSONString(key),true);
             userApiKey.add(key);
-            log.info("user={}, apiKey={}", userDO.getEmail(), key);
+            log.info("user={}, apiKey={}", userDO.getEmail(), JSON.toJSONString(key));
             MyChromeDriver.exit();
         }
         FileUtil.writeSetting(USER_ACCOUNT, JSON.toJSONString(userApiKey));

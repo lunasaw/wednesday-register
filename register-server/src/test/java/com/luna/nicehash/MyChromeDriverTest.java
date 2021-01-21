@@ -7,6 +7,7 @@ import com.luna.nicehash.entity.UserDO;
 import com.luna.nicehash.login.Login;
 import com.luna.nicehash.register.Register;
 import com.luna.nicehash.util.CountDown;
+import com.luna.nicehash.util.FileUtil;
 import com.luna.nicehash.util.ParseJsonFile;
 import org.junit.Test;
 
@@ -51,28 +52,42 @@ public class MyChromeDriverTest {
 
     @Test
     public void register() throws InterruptedException {
-        Register.autoRegister(322, 10, 1);
+        Register.autoRegister(342, 10, 5);
         MyChromeDriver.chromeDriver.quit();
     }
 
     @Test
     public void registerOne() throws InterruptedException {
-        Register.register("pascalqq+0318@protonmail.com","E8*T$.dJ4&");
+        Register.register("pascalqq+0318@protonmail.com", "E8*T$.dJ4&");
         MyChromeDriver.chromeDriver.quit();
     }
 
     @Test
     public void autoStart() throws InterruptedException {
-        List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readFile(UserDO.class, "user_account.json");
+        List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readListFile(UserDO.class, "user_account.json");
         System.out.println(JSON.toJSONString(list));
         Dashboard.autoCrete(list);
         MyChromeDriver.chromeDriver.quit();
     }
 
     @Test
+    public void readJson() {
+        int num = 331;
+        int size = 6;
+        ArrayList<UserDO> arrayList = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            String id = String.valueOf(num + i);
+            String email = "pascalqq+" + (id.length() > 4 ? id : "0" + id) + "@protonmail.com";
+            UserDO userDO = new ParseJsonFile<UserDO>().readFile(UserDO.class, "account_tmp/account_" + email + ".json");
+            arrayList.add(userDO);
+        }
+        FileUtil.writeSetting("user_account.json", JSON.toJSONString(arrayList));
+    }
+
+    @Test
     public void autoRegisterAndGetApi() throws InterruptedException {
-        Register.autoRegister(326, 10, 1);
-        List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readFile(UserDO.class, "user_account.json");
+        Register.autoRegister(331, 10, 6);
+        List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readListFile(UserDO.class, "user_account.json");
         System.out.printf(JSON.toJSONString(list));
         // 等待账号激活
         CountDown.countDown(40L);

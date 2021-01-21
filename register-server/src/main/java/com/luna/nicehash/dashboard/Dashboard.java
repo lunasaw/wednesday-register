@@ -64,6 +64,10 @@ public class Dashboard {
     private static final String API_SECRET_SELECTOR          =
         "#app>div.modal-bg.show>span:nth-child(2)>div>div>div.modal-content>div>div:nth-child(3)>div.input-group>input";
 
+    /** api 创建完成检测选择器 */
+    private static final String API_CREATED_SELECTOR         =
+        "#content>div.container.flex.mb32.settings-panel>div.content.ml32.ml0-sm-down.mt32-sm-down>div>div>div.relative>div>div>table>tbody>tr";
+
     /**
      * 控制台
      *
@@ -155,7 +159,11 @@ public class Dashboard {
         MyChromeDriver.chromeDriver.findElement(By.cssSelector(ENSURE_ACTIVE_SELECTOR)).click();
 
         log.info("发送api激活邮件 等待40秒");
-        CountDown.countDown(40L);
+        // CountDown.countDown(40L);
+
+        // 等待api标签出现
+        wait = new WebDriverWait(MyChromeDriver.chromeDriver, 40);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(API_CREATED_SELECTOR)));
         // 地址
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/mining/rigs");
         Thread.sleep(3000L);

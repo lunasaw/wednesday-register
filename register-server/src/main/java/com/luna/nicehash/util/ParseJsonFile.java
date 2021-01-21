@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ParseJsonFile<T> {
 
-    public List<?> readFile(Class c, String jsonFile){
+    public List<?> readListFile(Class c, String jsonFile){
         String text = null;
         try {
             InputStream inputStream = new FileInputStream(jsonFile);
@@ -26,5 +26,16 @@ public class ParseJsonFile<T> {
             e.printStackTrace();
         }
         return JSON.parseArray(text, c);
+    }
+
+    public T readFile(Class c, String jsonFile){
+        String text = null;
+        try {
+            InputStream inputStream = new FileInputStream(jsonFile);
+            text = IOUtils.toString(inputStream, Charset.defaultCharset());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return (T) JSON.parseObject(text, c);
     }
 }

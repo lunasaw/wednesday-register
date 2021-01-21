@@ -87,6 +87,9 @@ public class Register {
         MyChromeDriver.chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(8)>div>button"))
             .click();
+
+        WebDriverWait wait = new WebDriverWait(MyChromeDriver.chromeDriver, 20);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(REGISTER_ID_SELECTOR)));
     }
 
     /**

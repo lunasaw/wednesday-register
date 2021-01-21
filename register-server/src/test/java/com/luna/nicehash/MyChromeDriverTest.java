@@ -9,11 +9,16 @@ import com.luna.nicehash.register.Register;
 import com.luna.nicehash.util.CountDown;
 import com.luna.nicehash.util.FileUtil;
 import com.luna.nicehash.util.ParseJsonFile;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +51,7 @@ public class MyChromeDriverTest {
     @Test
     public void autoGetKey() throws InterruptedException {
         List<UserDO> userList = new ArrayList<UserDO>();
-        userList.add(new UserDO("pascalqq+0313@protonmail.com", "%bEK2sd*V5"));
+        userList.add(new UserDO("luna_splendid+000000001@protonmail.com", "E8*T$.dJ4&"));
         Dashboard.autoCrete(userList);
     }
 
@@ -58,7 +63,7 @@ public class MyChromeDriverTest {
 
     @Test
     public void registerOne() throws InterruptedException {
-        Register.register("pascalqq+0318@protonmail.com", "E8*T$.dJ4&");
+        Register.register("luna_splendid+000000001@protonmail.com", "E8*T$.dJ4&");
         MyChromeDriver.chromeDriver.quit();
     }
 
@@ -72,8 +77,8 @@ public class MyChromeDriverTest {
 
     @Test
     public void readJson() {
-        int num = 331;
-        int size = 6;
+        int num = 284;
+        int size = 8;
         ArrayList<UserDO> arrayList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String id = String.valueOf(num + i);

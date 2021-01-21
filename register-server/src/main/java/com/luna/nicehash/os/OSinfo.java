@@ -122,13 +122,5 @@ public class OSinfo {
         }
         return _instance.platform;
     }
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        System.out.println(OSinfo.getOSname());// 获取系统类型
-        System.out.println(OSinfo.isWindows());// 判断是否为windows系统 
-    }
-
 }
 

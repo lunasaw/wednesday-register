@@ -91,7 +91,7 @@ public class MyChromeDriverTest {
 
     @Test
     public void autoRegisterAndGetApi() throws InterruptedException {
-        Register.autoRegister(331, 10, 6);
+        Register.autoRegister(347, 10, 10);
         List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readListFile(UserDO.class, "user_account.json");
         System.out.printf(JSON.toJSONString(list));
         // 等待账号激活

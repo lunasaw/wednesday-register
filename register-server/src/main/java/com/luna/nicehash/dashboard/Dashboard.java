@@ -169,7 +169,7 @@ public class Dashboard {
         Thread.sleep(3000L);
         MyChromeDriver.chromeDriver
             .findElement(By.cssSelector(
-                "#content>div.container-full-white>div:nth-child(2)>div.row.header>div:nth-child(1)>button"))
+                "#content>div.container-full-whitex>div:nth-child(2)>div.row.header>div:nth-child(1)>button"))
             .click();
         Thread.sleep(1000L);
         MyChromeDriver.chromeDriver

@@ -18,6 +18,8 @@ public class Login {
 
     private static final String DASHBOARD_ID_SELECTOR = "#content>div.main-top-menu>ul>li:nth-child(1)>a";
 
+    private static final String LOGIN_SELECTOR        = "#content>div>div.box>div>div>form>div:nth-child(1)>div>input";
+
     /**
      * 登录
      * 
@@ -27,10 +29,12 @@ public class Login {
      */
     public static void login(String email, String password) throws InterruptedException {
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/login");
+        WebDriverWait wait = new WebDriverWait(MyChromeDriver.chromeDriver, 20);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(LOGIN_SELECTOR)));
         Thread.sleep(2000L);
         // 使用额email定位手机号的输入框
         WebElement inputEmail = MyChromeDriver.chromeDriver
-            .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(1)>div>input"));
+            .findElement(By.cssSelector(LOGIN_SELECTOR));
         // 清除输入框内容
         inputEmail.clear();
         // 输入邮箱
@@ -57,7 +61,7 @@ public class Login {
         MyChromeDriver.chromeDriver
             .findElement(By.cssSelector("#content>div>div.box>div>div>form>div.text-center.mb40>div>button"))
             .click();
-        WebDriverWait wait = new WebDriverWait(MyChromeDriver.chromeDriver, 20);
+        wait = new WebDriverWait(MyChromeDriver.chromeDriver, 20);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(DASHBOARD_ID_SELECTOR)));
     }
 }

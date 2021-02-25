@@ -68,6 +68,8 @@ public class Dashboard {
     private static final String API_CREATED_SELECTOR         =
         "#content>div.container.flex.mb32.settings-panel>div.content.ml32.ml0-sm-down.mt32-sm-down>div>div>div.relative>div>div>table>tbody>tr";
 
+    private static final String MINNER_ADDRESS_SELECTOR      =
+        "#content>div.container-full-whitex>div:nth-child(1)>div.row.header>div:nth-child(1)>button";
     /**
      * 控制台
      *
@@ -166,10 +168,10 @@ public class Dashboard {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(API_CREATED_SELECTOR)));
         // 地址
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/mining/rigs");
-        Thread.sleep(3000L);
+        wait = new WebDriverWait(MyChromeDriver.chromeDriver, 40);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(MINNER_ADDRESS_SELECTOR)));
         MyChromeDriver.chromeDriver
-            .findElement(By.cssSelector(
-                "#content>div.container-full-whitex>div:nth-child(2)>div.row.header>div:nth-child(1)>button"))
+            .findElement(By.cssSelector(MINNER_ADDRESS_SELECTOR))
             .click();
         Thread.sleep(1000L);
         MyChromeDriver.chromeDriver

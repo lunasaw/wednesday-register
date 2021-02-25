@@ -91,12 +91,12 @@ public class MyChromeDriverTest {
 
     @Test
     public void autoRegisterAndGetApi() throws InterruptedException {
-        Register.autoRegister(347, 10, 10);
+        Register.autoRegister(377, 10, 10);
         List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readListFile(UserDO.class, "user_account.json");
         System.out.printf(JSON.toJSONString(list));
         // 等待账号激活
         CountDown.countDown(40L);
-        Dashboard.autoCrete(list);
+        // Dashboard.autoCrete(list);
         MyChromeDriver.chromeDriver.quit();
     }
 }

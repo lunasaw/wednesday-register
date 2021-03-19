@@ -85,18 +85,22 @@ public class Dashboard {
                 .findElement(By.cssSelector("#app>div.modal-bg.show>span>div>div>div>button"))
                 .click();
 
-            // 选择矿场
-            MyChromeDriver.chromeDriver
-                .findElement(
-                    By.cssSelector("#app>div.modal-bg.show>span>div>div>div>div:nth-child(5)>div.col3>label>span"))
-                .click();
+            try {
+                MyChromeDriver.chromeDriver
+                    .findElement(By.cssSelector(
+                        "#app>div.modal-bg.show>span>div>div>div>div:nth-child(5)>div.col2>div.mt16>div>label"))
+                    .click();
+            } catch (Exception e) {
+
+            }
 
             // 开始使用
             MyChromeDriver.chromeDriver
-                .findElement(By.cssSelector("#app>div.modal-bg.show>span>div>div>div>button"))
+                .findElement(By.xpath("//*[@id=\"app\"]/div[3]/span/div/div/div/button"))
                 .click();
-        } catch (Exception e) {
 
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
     }
@@ -173,11 +177,16 @@ public class Dashboard {
         MyChromeDriver.chromeDriver
             .findElement(By.cssSelector(MINNER_ADDRESS_SELECTOR))
             .click();
-        Thread.sleep(1000L);
-        MyChromeDriver.chromeDriver
-            .findElement(By.cssSelector(
-                "#app>div.modal-bg.show>span>div>div>div.modal-content>div>div>div.mt32.field-wrap.input-undefined>div.input-group.medium>button"))
-            .click();
+
+        try {
+            MyChromeDriver.chromeDriver
+                .findElement(
+                    By.cssSelector("#app>div.vue-portal-target>span>div.tour-step>div.buttons>a.btn.small.nobtn.mr16"))
+                .click();
+        } catch (Exception e) {
+
+        }
+
         Thread.sleep(1000L);
         String address = MyChromeDriver.chromeDriver
             .findElement(By.cssSelector(

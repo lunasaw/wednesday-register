@@ -85,18 +85,14 @@ public class Dashboard {
                 .findElement(By.cssSelector("#app>div.modal-bg.show>span>div>div>div>button"))
                 .click();
 
-            try {
-                MyChromeDriver.chromeDriver
+            MyChromeDriver.chromeDriver
                     .findElement(By.cssSelector(
-                        "#app>div.modal-bg.show>span>div>div>div>div:nth-child(5)>div.col2>div.mt16>div>label"))
+                    "#app>div.modal-bg.show>span>div>div>div>div:nth-child(5)>div.col2>div.mt16>div>label"))
                     .click();
-            } catch (Exception e) {
-
-            }
 
             // 开始使用
             MyChromeDriver.chromeDriver
-                .findElement(By.xpath("//*[@id=\"app\"]/div[3]/span/div/div/div/button"))
+                .findElement(By.xpath("/html/body/div/div[3]/span/div/div/div/button"))
                 .click();
 
         } catch (Exception e) {
@@ -118,17 +114,17 @@ public class Dashboard {
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/settings/keys");
         WebDriverWait wait = new WebDriverWait(MyChromeDriver.chromeDriver, 20);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(ORGANIZATION_ID_SELECTOR)));
-        Thread.sleep(3000L);
+        Thread.sleep(2000L);
         // 组织id
         WebElement organizationIdLabel =
             MyChromeDriver.chromeDriver.findElement(By.cssSelector(ORGANIZATION_ID_SELECTOR));
         String organizationIdText = organizationIdLabel.getText();
-        Thread.sleep(1000L);
+        Thread.sleep(500);
 
         // 创建API按钮
         MyChromeDriver.chromeDriver.findElement(By.cssSelector(CREATE_API_KEY_SELECTOR)).click();
 
-        Thread.sleep(1000L);
+        Thread.sleep(500);
         // 密钥名称
         WebElement inputApiKeyName =
             MyChromeDriver.chromeDriver.findElement(By.cssSelector(INPUT_API_KEY_NAME_SELECTOR));
@@ -137,10 +133,10 @@ public class Dashboard {
         // 输入密钥名称
         inputApiKeyName.sendKeys("w");
         // 休息
-        Thread.sleep(2000L);
+        Thread.sleep(1000);
         // 创建密钥
         MyChromeDriver.chromeDriver.findElement(By.cssSelector(ENSURE_API_KEY_NAME_SELECTOR)).click();
-        Thread.sleep(2000L);
+        Thread.sleep(1000);
         // 输入密码
         WebElement inputPassword = MyChromeDriver.chromeDriver.findElement(By.cssSelector(INPUT_PASSWORD_SELECTOR));
         // 清除输入框内容
@@ -148,19 +144,19 @@ public class Dashboard {
         // 输入密码
         inputPassword.sendKeys(password);
         // 休息
-        Thread.sleep(2000L);
+        Thread.sleep(1000);
         MyChromeDriver.chromeDriver.findElement(By.cssSelector(SUBMIT_PASSWORD_SELECTOR)).click();
 
         String apikey = MyChromeDriver.chromeDriver
             .findElement(By.cssSelector(API_KEY_SELECTOR)).getAttribute("value");
-        Thread.sleep(1000L);
+        Thread.sleep(500);
         String apiSecret = MyChromeDriver.chromeDriver
             .findElement(By.cssSelector(API_SECRET_SELECTOR)).getAttribute("value");
 
         // 确认已保存
         MyChromeDriver.chromeDriver.findElement(By.cssSelector(ENSURE_SAVE_KET_SELECTOR))
             .click();
-        Thread.sleep(1000L);
+        Thread.sleep(500);
         // 激活
         MyChromeDriver.chromeDriver.findElement(By.cssSelector(ENSURE_ACTIVE_SELECTOR)).click();
 
@@ -168,12 +164,24 @@ public class Dashboard {
         // CountDown.countDown(40L);
 
         // 等待api标签出现
-        wait = new WebDriverWait(MyChromeDriver.chromeDriver, 40);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(API_CREATED_SELECTOR)));
+        try {
+            wait = new WebDriverWait(MyChromeDriver.chromeDriver, 40);
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(API_CREATED_SELECTOR)));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            wait = new WebDriverWait(MyChromeDriver.chromeDriver, 40);
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(API_CREATED_SELECTOR)));
+        }
         // 地址
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/mining/rigs");
-        wait = new WebDriverWait(MyChromeDriver.chromeDriver, 40);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(MINNER_ADDRESS_SELECTOR)));
+        try {
+            wait = new WebDriverWait(MyChromeDriver.chromeDriver, 40);
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(MINNER_ADDRESS_SELECTOR)));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            wait = new WebDriverWait(MyChromeDriver.chromeDriver, 40);
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(MINNER_ADDRESS_SELECTOR)));
+        }
         MyChromeDriver.chromeDriver
             .findElement(By.cssSelector(MINNER_ADDRESS_SELECTOR))
             .click();
@@ -187,15 +195,15 @@ public class Dashboard {
 
         }
 
-        Thread.sleep(1000L);
+        Thread.sleep(500);
         String address = MyChromeDriver.chromeDriver
             .findElement(By.cssSelector(
                 "#app>div.modal-bg.show>span>div>div>div.modal-content>div>div>div.mt32.field-wrap.input-undefined>div.input-group.medium>input"))
             .getAttribute("value");
-        Thread.sleep(1000L);
+        Thread.sleep(500);
 
         MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/dashboard");
-        Thread.sleep(1000L);
+        Thread.sleep(500);
         return new ApiKeyDO(organizationIdText, address, apikey, apiSecret);
     }
 
@@ -221,9 +229,5 @@ public class Dashboard {
             MyChromeDriver.exit();
         }
         FileUtil.writeSetting(USER_ACCOUNT, JSON.toJSONString(userApiKey));
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-
     }
 }

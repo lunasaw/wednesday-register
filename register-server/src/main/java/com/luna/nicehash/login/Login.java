@@ -28,8 +28,8 @@ public class Login {
      * @throws InterruptedException
      */
     public static void login(String email, String password) throws InterruptedException {
-        MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/login");
-        WebDriverWait wait = new WebDriverWait(MyChromeDriver.chromeDriver, 20);
+        MyChromeDriver.chromeDriver.get("https://www.nicehash.com/my/dashboard");
+        WebDriverWait wait = new WebDriverWait(MyChromeDriver.chromeDriver, 30);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(LOGIN_SELECTOR)));
         Thread.sleep(2000L);
         // 使用额email定位手机号的输入框

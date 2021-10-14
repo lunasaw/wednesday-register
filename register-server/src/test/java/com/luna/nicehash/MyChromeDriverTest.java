@@ -76,9 +76,10 @@ public class MyChromeDriverTest {
     }
 
     @Test
-    public void readJson() {
-        int num = 284;
-        int size = 8;
+    public void readJson() throws InterruptedException {
+        Thread.sleep(10000L);
+        int num = 600;
+        int size = 1;
         ArrayList<UserDO> arrayList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String id = String.valueOf(num + i);

@@ -31,7 +31,7 @@ public class Register {
     private static final Logger log                  = LoggerFactory.getLogger(Register.class);
 
     private static final String REGISTER_ID_SELECTOR =
-        "#content>div>div.box>div>div:nth-child(2)>div>form>div.text-center.mb40>button";
+        "#content>div>div.box>div>div>form>div:nth-child(8)>div>button";
 
     /**
      *
@@ -80,8 +80,32 @@ public class Register {
 
         // 同意协议
         MyChromeDriver.chromeDriver
-            .findElement(By.cssSelector("#content>div>div.box>div>div>form>div.mb16>div>label>span"))
+            .findElement(By.cssSelector("#content>div>div.box>div>div>form>div.mb16>div>label"))
             .click();
+
+        // 选择国家
+        MyChromeDriver.chromeDriver
+            .findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(5)>div.selectbox>div.field"))
+            .click();
+
+        MyChromeDriver.chromeDriver
+            .findElement(
+                By.cssSelector(
+                    "#content>div>div.box>div>div>form>div:nth-child(5)>div.selectbox.open>div.dropdown.flex.flex--no-wrap>div.options>div:nth-child(77)"))
+            .click();
+        //
+        // MyChromeDriver.chromeDriver.findElement(By.cssSelector("#content>div>div.box>div>div>form>div:nth-child(5)>div.selectbox")).click();
+        // Thread.sleep(1000L);
+        // WebElement formElement =
+        // MyChromeDriver.chromeDriver.findElement(By.xpath("/html/body/div[1]/div[4]/div/div[2]/div/div/form/div[5]/div[2]/div[2]/div/div[238]"));
+        // Select downList = new Select(formElement);
+        // downList.selectByIndex(2);
+        // downList.selectByValue();
+        // List<WebElement> List = downList.getAllSelectedOptions();
+        // for(WebElement option:List){
+        // System.out.println(option.getText());
+        // }
+        // System.out.println(downList.getFirstSelectedOption().getText());
 
         // 提交
         MyChromeDriver.chromeDriver

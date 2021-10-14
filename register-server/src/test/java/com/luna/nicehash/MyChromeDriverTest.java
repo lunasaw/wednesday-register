@@ -75,6 +75,7 @@ public class MyChromeDriverTest {
         MyChromeDriver.chromeDriver.quit();
     }
 
+
     @Test
     public void readJson() throws InterruptedException {
         Thread.sleep(10000L);
@@ -92,12 +93,12 @@ public class MyChromeDriverTest {
 
     @Test
     public void autoRegisterAndGetApi() throws InterruptedException {
-        Register.autoRegister(428, 10, 10);
+        Register.autoRegister(604, 10, 1);
         List<UserDO> list = (List<UserDO>)new ParseJsonFile<UserDO>().readListFile(UserDO.class, "user_account.json");
         System.out.printf(JSON.toJSONString(list));
         // 等待账号激活
         CountDown.countDown(40L);
         // Dashboard.autoCrete(list);
-        MyChromeDriver.chromeDriver.quit();
+        // MyChromeDriver.chromeDriver.quit();
     }
 }
